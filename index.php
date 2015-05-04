@@ -12,7 +12,7 @@
             <div id="spelplan">
 
                 <script>
-                    var myDataRef = new Firebase('https://blinding-heat-5966.firebaseio.com/');
+                    var ref = new Firebase('https://blinding-heat-5966.firebaseio.com/');
                     
 //                  Array:
 //                            0 = tom ruta
@@ -23,13 +23,24 @@
                     var bytSiffror = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "L"];
                     var spelareEtt = skapaSpelarArray();
                     var spelareTva = skapaSpelarArray();
-                    console.log(spelareEtt);
+                    
+
+
+                    
                     skapaSkepp(1, 1, spelareEtt);
                     skapaSkepp(1, 2, spelareEtt);
                     skapaSkepp(1, 3, spelareEtt);
                     skjut(1, 1, spelareEtt);
                     skjut(2, 1, spelareEtt);
                     skapaPlan(spelareEtt);
+
+                    var json_spelareEtt = JSON.stringify(spelareEtt);
+                    console.log(json_spelareEtt);
+                    
+                    var spelarRef = ref.child("spelare");
+                    spelarRef.set({
+                        spelareEtt: json_spelareEtt 
+                    })
 
                     function skapaSpelarArray() {
                         var tmpArray = new Array(10);
