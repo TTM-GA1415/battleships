@@ -1,0 +1,33 @@
+#spelplan{
+    overflow: auto;
+    margin: 0 auto;
+    width: 1400px;
+    height: 900px;
+}
+form{
+    margin-left: 600px;
+    margin-top: 50px;
+}
+.spelare{
+    float:left;
+    height: 400px;
+}
+.planRuta{
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+}
+.skepp{
+    background-color: lightgreen;
+}
+.skeppHit{
+    background-color: #CD5C5C;
+}
+.miss{
+    background-color: lightgray;
+}
+#spelplan ul li{
+    margin-left: -25px;
+    margin-top: -15px;
+    list-style-type: none;
+}
