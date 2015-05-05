@@ -7,56 +7,95 @@
 $(document).ready(function() {
     shootListener();
     boatListener();
-    function shootListener() {
-        $('.shoot').click(function() {
-            $('form').submit(function(event) {
-                event.preventDefault();
-            })
-            
-            var form = document.getElementById("shoot");
-            var xKord = form.elements[0].value;
-            var yKord = form.elements[1].value;
-            
-            skjut(xKord, yKord, spelareEtt);
-            
-            redigeraPlan(spelareEtt);
-        })
-    }
-    function boatListener() {
-        $('.placeBoat').click(function() {
-            $('form').submit(function(event) {
-                event.preventDefault();
-            })
-            
-            var form = document.getElementById("placeBoat");
-            var xKord = form.elements[0].value;
-            var yKord = form.elements[1].value;
-            
-            skapaSkepp(xKord, yKord, spelareEtt);
-            
-            redigeraPlan(spelareEtt);
-        })
-    }
+    resetListener();
+
+
     var ref = new Firebase('https://blinding-heat-5966.firebaseio.com/');
 
     var bytSiffror = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "L"];
     var spelareEtt = skapaSpelarArray();
     var spelareTva = skapaSpelarArray();
 
-//                    skapaSkepp(1, 1, spelareEtt);
-//                    skapaSkepp(1, 2, spelareEtt);
-//                    skapaSkepp(1, 3, spelareEtt);
     skapaPlan(spelareEtt);
-//                    skjut(1, 1, spelareEtt);
-//                    skjut(2, 1, spelareEtt);
-//                    redigeraPlan(spelareEtt);
 
-    var json_spelareEtt = JSON.stringify(spelareEtt);
+    getSpelplan();
 
-    var spelarRef = ref.child("spelare");
-    spelarRef.set({
-        spelareEtt: json_spelareEtt
-    })
+    function getSpelplan() {
+        ref.on("value", function(snapshot) {
+            var object = snapshot.val();
+            var array = JSON.parse(object.spelare.spelareEtt);
+            console.log(array);
+            redigeraPlan(array);
+        }, function(errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+    }
+
+    function shootListener() {
+        $('.shoot').click(function() {
+            $('form').submit(function(event) {
+                event.preventDefault();
+            });
+
+            var form = document.getElementById("shoot");
+            var xKord = form.elements[0].value;
+            var yKord = form.elements[1].value;
+
+            skjut(xKord, yKord, spelareEtt);
+
+            var json_spelareEtt = JSON.stringify(spelareEtt);
+
+            var spelarRef = ref.child("spelare");
+            spelarRef.set({
+                spelareEtt: json_spelareEtt
+            });
+
+            redigeraPlan(spelareEtt);
+        });
+    }
+
+    function boatListener() {
+        $('.placeBoat').click(function() {
+            $('form').submit(function(event) {
+                event.preventDefault();
+            });
+
+            var form = document.getElementById("placeBoat");
+            var xKord = form.elements[0].value;
+            var yKord = form.elements[1].value;
+
+            skapaSkepp(xKord, yKord, spelareEtt);
+
+            var json_spelareEtt = JSON.stringify(spelareEtt);
+
+            var spelarRef = ref.child("spelare");
+            spelarRef.set({
+                spelareEtt: json_spelareEtt
+            });
+
+            redigeraPlan(spelareEtt);
+        });
+    }
+
+    function resetListener(){
+        $('.reset').click(function() {
+            $('form').submit(function(event) {
+                event.preventDefault();
+            });
+            console.log(spelareEtt);
+            reset(spelareEtt);
+            console.log(spelareEtt);
+            var json_spelareEtt = JSON.stringify(spelareEtt);
+
+            var spelarRef = ref.child("spelare");
+            spelarRef.set({
+                spelareEtt: json_spelareEtt
+            });
+
+            redigeraPlan(spelareEtt);
+        });
+    }
 
     function skapaSpelarArray() {
         var tmpArray = new Array(10);
@@ -146,5 +185,7 @@ $(document).ready(function() {
         }
     }
 
-
-})
+    function reset(array) {
+        array = skapaSpelarArray(array);
+    }
+});

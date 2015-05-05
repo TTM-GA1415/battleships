@@ -21,6 +21,9 @@
                     <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required>
                     <input class="shoot" type="submit" name="shoot" value="Skjut">
                 </form>
+                <form>
+                    <input class="reset" type="submit" name="reset" value="Töm plan">
+                </form>
             </div>
 
 
