@@ -8,6 +8,7 @@ $(document).ready(function() {
     shootListener();
     boatListener();
     resetListener();
+    boatListenerType();
 
 
     var ref = new Firebase('https://blinding-heat-5966.firebaseio.com/');
@@ -66,6 +67,37 @@ $(document).ready(function() {
             var yKord = form.elements[1].value;
 
             skapaSkepp(xKord, yKord, spelareEtt);
+
+            var json_spelareEtt = JSON.stringify(spelareEtt);
+
+            var spelarRef = ref.child("spelare");
+            spelarRef.set({
+                spelareEtt: json_spelareEtt
+            });
+            
+            getSpelplan();
+//            redigeraPlan(spelareEtt);
+        });
+    }
+
+    function boatListenerType() {
+        $('.placeBoatType').click(function() {
+            $('form').submit(function(event) {
+                event.preventDefault();
+            });
+
+            var form = document.getElementById("placeBoatType");
+            var xKord = form.elements[0].value;
+            var yKord = form.elements[1].value;
+            var type = form.elements[2].value;
+            var direction = form.elements[3].value;
+
+            console.log(xKord);
+            console.log(yKord);
+            console.log(type);
+            console.log(direction);
+
+            skapaSkeppTyp(type, direction, xKord, yKord, spelareEtt);
 
             var json_spelareEtt = JSON.stringify(spelareEtt);
 
@@ -187,5 +219,25 @@ $(document).ready(function() {
     function reset(array) {
         array = skapaSpelarArray(array);
         return array;
+    }
+    
+    function skapaSkeppTyp(type, direction, xStart, yStart, spelarArray){
+        console.log("start");
+        switch(direction){
+            case "vertical":
+                for(i = 0; i < type; i++){
+                    var yVal = yStart + i;
+                    spelarArray[xStart][yVal] = 1;
+                }
+                break;
+            case "horisontal":
+                for(i = 0; i < type; i++){
+                    var xVal = xStart + i;
+                    spelarArray[xVal][yStart] = 1;
+                }
+                break;
+            default:
+                console.log("Now you fucked up!");
+        }
     }
 });
