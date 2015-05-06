@@ -23,15 +23,14 @@ $(document).ready(function() {
     function getSpelplan() {
         ref.on("value", function(snapshot) {
             var object = snapshot.val();
-            var array = JSON.parse(object.spelare.spelareEtt);
-            console.log(array);
-            redigeraPlan(array);
+            spelareEtt = JSON.parse(object.spelare.spelareEtt);
+            redigeraPlan(spelareEtt);
         }, function(errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
 
     }
-
+    
     function shootListener() {
         $('.shoot').click(function() {
             $('form').submit(function(event) {
@@ -51,7 +50,8 @@ $(document).ready(function() {
                 spelareEtt: json_spelareEtt
             });
 
-            redigeraPlan(spelareEtt);
+            getSpelplan();
+//            redigeraPlan(spelareEtt);
         });
     }
 
@@ -73,8 +73,9 @@ $(document).ready(function() {
             spelarRef.set({
                 spelareEtt: json_spelareEtt
             });
-
-            redigeraPlan(spelareEtt);
+            
+            getSpelplan();
+//            redigeraPlan(spelareEtt);
         });
     }
 
@@ -83,17 +84,15 @@ $(document).ready(function() {
             $('form').submit(function(event) {
                 event.preventDefault();
             });
-            console.log(spelareEtt);
-            reset(spelareEtt);
-            console.log(spelareEtt);
+            spelareEtt = reset(spelareEtt);
             var json_spelareEtt = JSON.stringify(spelareEtt);
-
             var spelarRef = ref.child("spelare");
             spelarRef.set({
                 spelareEtt: json_spelareEtt
             });
 
-            redigeraPlan(spelareEtt);
+            getSpelplan();
+//            redigeraPlan(spelareEtt);
         });
     }
 
@@ -187,5 +186,6 @@ $(document).ready(function() {
 
     function reset(array) {
         array = skapaSpelarArray(array);
+        return array;
     }
 });
