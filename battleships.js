@@ -31,7 +31,7 @@ $(document).ready(function() {
         });
 
     }
-    
+
     function shootListener() {
         $('.shoot').click(function() {
             $('form').submit(function(event) {
@@ -74,7 +74,7 @@ $(document).ready(function() {
             spelarRef.set({
                 spelareEtt: json_spelareEtt
             });
-            
+
             getSpelplan();
 //            redigeraPlan(spelareEtt);
         });
@@ -85,17 +85,16 @@ $(document).ready(function() {
             $('form').submit(function(event) {
                 event.preventDefault();
             });
-
             var form = document.getElementById("placeBoatType");
             var xKord = form.elements[0].value;
             var yKord = form.elements[1].value;
-            var type = form.elements[2].value;
-            var direction = form.elements[3].value;
+            var direction = form.elements[6].value;
+            var type = $('.radio:checked').val();
 
-            console.log(xKord);
-            console.log(yKord);
-            console.log(type);
-            console.log(direction);
+//            console.log("x: " + xKord);
+//            console.log("y: " + yKord);
+//            console.log("typ: " + type);
+//            console.log("riktning: " + direction);
 
             skapaSkeppTyp(type, direction, xKord, yKord, spelareEtt);
 
@@ -105,13 +104,13 @@ $(document).ready(function() {
             spelarRef.set({
                 spelareEtt: json_spelareEtt
             });
-            
+
             getSpelplan();
 //            redigeraPlan(spelareEtt);
         });
     }
 
-    function resetListener(){
+    function resetListener() {
         $('.reset').click(function() {
             $('form').submit(function(event) {
                 event.preventDefault();
@@ -220,24 +219,38 @@ $(document).ready(function() {
         array = skapaSpelarArray(array);
         return array;
     }
-    
-    function skapaSkeppTyp(type, direction, xStart, yStart, spelarArray){
-        console.log("start");
-        switch(direction){
+
+    function skapaSkeppTyp(type, direction, xStart, yStart, spelarArray) {
+        xStart = parseInt(xStart);
+        yStart = parseInt(yStart);
+        type = parseInt(type);
+        console.log(direction);
+        console.log("work?")
+        switch (direction) {
             case "vertical":
-                for(i = 0; i < type; i++){
+                for (i = 0; i < type; i++) {
+                    
                     var yVal = yStart + i;
+                    console.log("y: " + yVal);
+                    console.log("x: " + xStart);
                     spelarArray[xStart][yVal] = 1;
+//                    console.log("Post-array: " + spelarArray);
                 }
                 break;
             case "horisontal":
-                for(i = 0; i < type; i++){
+                for (i = 0; i < type; i++) {
+                    
                     var xVal = xStart + i;
+                    console.log("x: " + xVal);
+                    console.log("y: " + yStart);
                     spelarArray[xVal][yStart] = 1;
+//                    console.log("Post-array: " + spelarArray);
                 }
                 break;
             default:
-                console.log("Now you fucked up!");
+//                console.log("Now you fucked up!");
         }
+//        console.log(spelarArray);
+        redigeraPlan(spelarArray);
     }
 });
