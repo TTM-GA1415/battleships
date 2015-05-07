@@ -11,15 +11,32 @@
         <div id="wrapper">
             <div id="spelplan">
                 <script src="battleships.js"></script>
-                <form id="placeBoat" method="GET">
+                <!--                <form id="placeBoat" method="GET">
+                                    <input class="x_kord" type="text" name="X-Kordinat" placeholder="X-Kordinat" required>
+                                    <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required>
+                                    <input class="placeBoat" type="submit" name="placeBoat" value="Placera Båt">
+                                </form>-->
+                <form id="placeBoatType" method="GET">
                     <input class="x_kord" type="text" name="X-Kordinat" placeholder="X-Kordinat" required>
-                    <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required>
-                    <input class="placeBoat" type="submit" name="placeBoat" value="Placera Båt">
+                    <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required><br>
+                    <input type="radio" name="boatType" value="2">2<br>
+                    <input type="radio" name="boatType" value="3">3<br>
+                    <input type="radio" name="boatType" value="4">4<br>
+                    <input type="radio" name="boatType" value="5">5<br>
+                    <select name="direction">
+                        <option value="vertical">Vertical</option>
+                        <option value="horisontal">Horisontal</option>
+                    </select>
+                    <br>
+                    <input class="placeBoatType" type="submit" name="placeBoatType" value="Placera Båt">
                 </form>
                 <form id="shoot" method="GET">
                     <input class="x_kord" type="text" name="X-Kordinat" placeholder="X-Kordinat" required>
                     <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required>
                     <input class="shoot" type="submit" name="shoot" value="Skjut">
+                </form>
+                <form>
+                    <input class="reset" type="submit" name="reset" value="Töm plan">
                 </form>
             </div>
 
