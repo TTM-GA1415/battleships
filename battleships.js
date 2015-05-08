@@ -16,6 +16,10 @@ $(document).ready(function() {
     var bytSiffror = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "L"];
     var spelareEtt = skapaSpelarArray();
     var spelareTva = skapaSpelarArray();
+    var boatTwo = 0;
+    var boatThree = 0;
+    var boatFour = 0;
+    var boatFive = 0;
 
     skapaPlan(spelareEtt);
 
@@ -88,7 +92,7 @@ $(document).ready(function() {
             var form = document.getElementById("placeBoatType");
             var xKord = form.elements[0].value;
             var yKord = form.elements[1].value;
-            var direction = form.elements[6].value;
+            var direction = form.elements[2].value;
             var type = $('.radio:checked').val();
 
 //            console.log("x: " + xKord);
@@ -224,33 +228,92 @@ $(document).ready(function() {
         xStart = parseInt(xStart);
         yStart = parseInt(yStart);
         type = parseInt(type);
-        console.log(direction);
-        console.log("work?")
+        var legit;
         switch (direction) {
             case "vertical":
+                //kolla om det går att placera båtar
                 for (i = 0; i < type; i++) {
-                    
                     var yVal = yStart + i;
-                    console.log("y: " + yVal);
-                    console.log("x: " + xStart);
-                    spelarArray[xStart][yVal] = 1;
-//                    console.log("Post-array: " + spelarArray);
+                    legit = kollaPlats(spelarArray, xStart, yVal);
+                    if (!legit) {
+                        window.alert("Så kan du inte göra din jävla idiot!");
+                        break;
+                    }
+                }
+                //Skapa Båtar
+                if (legit) {
+                    console.log("Work");
+                    for (i = 0; i < type; i++) {
+
+                        var yVal = yStart + i;
+                        console.log("y: " + yVal + " x: " + xStart);
+                        spelarArray[xStart][yVal] = 1;
+                    }
+                    switch (type) {
+                        case 2:
+
+                            console.log(boatTwo);
+                            boatTwo += 1;
+                            if (boatTwo >= 4) {
+                                $('input').remove('.two');
+                            }
+                            break;
+                        case 3:
+                            boatThree++;
+                            if (boatThree >= 3) {
+                                $('input').remove('.three');
+                            }
+                            break;
+                        case 4:
+                            boatFour++;
+                            if (boatFour >= 2) {
+                                $('input').remove('.four');
+                            }
+                            break;
+                        case 5:
+                            boatFive++;
+                            if (boatFive >= 1) {
+                                $('input').remove('.five');
+                            }
+                            break;
+                        default:
+                            console.log("Now u fucked uP!");
+                            break;
+                    }
                 }
                 break;
             case "horisontal":
+                //kolla om det går att placera båtar
                 for (i = 0; i < type; i++) {
-                    
                     var xVal = xStart + i;
-                    console.log("x: " + xVal);
-                    console.log("y: " + yStart);
-                    spelarArray[xVal][yStart] = 1;
-//                    console.log("Post-array: " + spelarArray);
+                    legit = kollaPlats(spelarArray, xVal, yStart);
+                    if (!legit) {
+                        window.alert("Så kan du inte göra din jävla idiot!");
+                        break;
+                    }
                 }
+                if (legit) {
+                    for (i = 0; i < type; i++) {
+                        var xVal = xStart + i;
+                        console.log("x: " + xVal + " y: " + yStart);
+                        spelarArray[xVal][yStart] = 1;
+//                    console.log("Post-array: " + spelarArray);
+                    }
+
+                }
+
                 break;
             default:
 //                console.log("Now you fucked up!");
         }
 //        console.log(spelarArray);
         redigeraPlan(spelarArray);
+    }
+    function kollaPlats(spelarArray, xKord, yKord) {
+        var legitim = true;
+        if (spelarArray[xKord][yKord] !== 0 || xKord > 9 || yKord > 9) {
+            legitim = false;
+        }
+        return legitim;
     }
 });

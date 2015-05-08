@@ -19,15 +19,16 @@
                 <form id="placeBoatType" method="GET">
                     <input class="x_kord" type="text" name="X-Kordinat" placeholder="X-Kordinat" required>
                     <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required><br>
-                    <input class="radio" type="radio" name="boatType" value="2">2<br>
-                    <input class="radio" type="radio" name="boatType" value="3">3<br>
-                    <input class="radio" type="radio" name="boatType" value="4">4<br>
-                    <input class="radio" type="radio" name="boatType" value="5">5<br>
                     <select name="direction">
                         <option value="vertical">Vertical</option>
                         <option value="horisontal">Horisontal</option>
                     </select>
                     <br>
+                    <input class="radio two" type="radio" name="boatType" value="2">2<br>
+                    <input class="radio three" type="radio" name="boatType" value="3">3<br>
+                    <input class="radio four" type="radio" name="boatType" value="4">4<br>
+                    <input class="radio five" type="radio" name="boatType" value="5">5<br>
+
                     <input class="placeBoatType" type="submit" name="placeBoatType" value="Placera Båt">
                 </form>
                 <form id="shoot" method="GET">
