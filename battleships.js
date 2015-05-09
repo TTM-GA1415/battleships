@@ -14,16 +14,23 @@ $(document).ready(function() {
     var ref = new Firebase('https://blinding-heat-5966.firebaseio.com/');
 
     var bytSiffror = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "L"];
-    var spelareEtt = skapaSpelarArray();
-    var spelareTva = skapaSpelarArray();
+    var spelareEtt = skapaArray();
+    var dator = skapaArray();
     var boatTwo = 0;
     var boatThree = 0;
     var boatFour = 0;
     var boatFive = 0;
+    var datorloop = 0;
+    var xRand = 0;
+    var yRand = 0;
 
-    skapaPlan(spelareEtt);
+    skapaPlan(dator);
+        genereraAI(dator);
 
-    getSpelplan();
+//    getSpelplan();
+
+
+
 
     function getSpelplan() {
         ref.on("value", function(snapshot) {
@@ -100,7 +107,7 @@ $(document).ready(function() {
 //            console.log("typ: " + type);
 //            console.log("riktning: " + direction);
 
-            skapaSkeppTyp(type, direction, xKord, yKord, spelareEtt);
+            skapaSkeppTyp(type, direction, xKord, yKord, spelareEtt, true);
 
             var json_spelareEtt = JSON.stringify(spelareEtt);
 
@@ -131,7 +138,7 @@ $(document).ready(function() {
         });
     }
 
-    function skapaSpelarArray() {
+    function skapaArray() {
         var tmpArray = new Array(10);
         for (x = 0; x < 10; x++) {
             tmpArray[x] = new Array(10);
@@ -220,11 +227,11 @@ $(document).ready(function() {
     }
 
     function reset(array) {
-        array = skapaSpelarArray(array);
+        array = skapaArray(array);
         return array;
     }
 
-    function skapaSkeppTyp(type, direction, xStart, yStart, spelarArray) {
+    function skapaSkeppTyp(type, direction, xStart, yStart, spelarArray, spelartyp) {
         xStart = parseInt(xStart);
         yStart = parseInt(yStart);
         type = parseInt(type);
@@ -236,23 +243,26 @@ $(document).ready(function() {
                     var yVal = yStart + i;
                     legit = kollaPlats(spelarArray, xStart, yVal);
                     if (!legit) {
-                        window.alert("Så kan du inte göra din jävla idiot!");
-                        break;
+                        if (spelartyp) {
+                            window.alert("Så kan du inte göra din jävla idiot!");
+                            break;
+                        } else {
+                            console.log("Generera nytt tal.");
+                            datorloop--;
+                            break;
+                        }
                     }
                 }
                 //Skapa Båtar
                 if (legit) {
-                    console.log("Work");
                     for (i = 0; i < type; i++) {
 
                         var yVal = yStart + i;
-                        console.log("y: " + yVal + " x: " + xStart);
                         spelarArray[xStart][yVal] = 1;
+                        console.log("(" + xStart + "," + yVal + ") innehåller nu en båt");
                     }
                     switch (type) {
                         case 2:
-
-                            console.log(boatTwo);
                             boatTwo += 1;
                             if (boatTwo >= 4) {
                                 $('input').remove('.two');
@@ -288,16 +298,52 @@ $(document).ready(function() {
                     var xVal = xStart + i;
                     legit = kollaPlats(spelarArray, xVal, yStart);
                     if (!legit) {
-                        window.alert("Så kan du inte göra din jävla idiot!");
-                        break;
+                        if (spelartyp) {
+                            window.alert("Så kan du inte göra din jävla idiot!");
+                            break;
+                        } else {
+                            console.log("Generera nytt tal.");
+                            datorloop--;
+                            break;
+                        }
+
                     }
                 }
                 if (legit) {
                     for (i = 0; i < type; i++) {
                         var xVal = xStart + i;
-                        console.log("x: " + xVal + " y: " + yStart);
                         spelarArray[xVal][yStart] = 1;
+                        console.log("(" + xVal + "," + yStart + ") innehåller nu en båt");
 //                    console.log("Post-array: " + spelarArray);
+                    }
+                    switch (type) {
+                        case 2:
+                            boatTwo += 1;
+                            if (boatTwo >= 4) {
+                                $('input').remove('.two');
+                            }
+                            break;
+                        case 3:
+                            boatThree++;
+                            if (boatThree >= 3) {
+                                $('input').remove('.three');
+                            }
+                            break;
+                        case 4:
+                            boatFour++;
+                            if (boatFour >= 2) {
+                                $('input').remove('.four');
+                            }
+                            break;
+                        case 5:
+                            boatFive++;
+                            if (boatFive >= 1) {
+                                $('input').remove('.five');
+                            }
+                            break;
+                        default:
+                            console.log("Now u fucked uP!");
+                            break;
                     }
 
                 }
@@ -309,11 +355,101 @@ $(document).ready(function() {
 //        console.log(spelarArray);
         redigeraPlan(spelarArray);
     }
-    function kollaPlats(spelarArray, xKord, yKord) {
+
+    function kollaPlats(spelarArray, x, y) {
+        var xKord = x;
+        var yKord = y;
         var legitim = true;
         if (spelarArray[xKord][yKord] !== 0 || xKord > 9 || yKord > 9) {
             legitim = false;
+            console.log("(" + xKord + "," + yKord + ") är redan upptagen eller utanför planen.");
         }
         return legitim;
+    }
+
+    function genereraAI(datorArray) {
+        boatTwo = 0;
+        boatThree = 0;
+        boatFour = 0;
+        boatFive = 0;
+        var dirRand = 1;
+        var dir = "vertical";
+        //Skapa tvåor
+        for (datorloop = 0; datorloop <= 3; datorloop++) {
+            xRand = Math.floor((Math.random() * 10) + 1) - 1;
+            yRand = Math.floor((Math.random() * 10) + 1) - 1;
+            dirRand = Math.floor((Math.random() * 2) + 1);
+            console.log("(" + xRand + "," + yRand + ") - " + dir);
+            switch (dirRand) {
+                case 1:
+                    dir = "vertical";
+                    break;
+                case 2:
+                    dir = "horisontal";
+                    break;
+                default:
+                    console.log("Käbbel med AI.");
+                    break;
+            }
+            skapaSkeppTyp(2, dir, xRand, yRand, datorArray, false);
+            redigeraPlan(datorArray);
+        }
+        for (datorloop = 0; datorloop <= 2; datorloop++) {
+            xRand = Math.floor((Math.random() * 10) + 1) - 1;
+            yRand = Math.floor((Math.random() * 10) + 1) - 1;
+            dirRand = Math.floor((Math.random() * 2) + 1);
+            console.log("(" + xRand + "," + yRand + ") - " + dir);
+            switch (dirRand) {
+                case 1:
+                    dir = "vertical";
+                    break;
+                case 2:
+                    dir = "horisontal";
+                    break;
+                default:
+                    console.log("Käbbel med AI.");
+                    break;
+            }
+            skapaSkeppTyp(3, dir, xRand, yRand, datorArray, false);
+            redigeraPlan(datorArray);
+        }
+        for (datorloop = 0; datorloop <= 1; datorloop++) {
+            xRand = Math.floor((Math.random() * 10) + 1) - 1;
+            yRand = Math.floor((Math.random() * 10) + 1) - 1;
+            dirRand = Math.floor((Math.random() * 2) + 1);
+            console.log("(" + xRand + "," + yRand + ") - " + dir);
+            switch (dirRand) {
+                case 1:
+                    dir = "vertical";
+                    break;
+                case 2:
+                    dir = "horisontal";
+                    break;
+                default:
+                    console.log("Käbbel med AI.");
+                    break;
+            }
+            skapaSkeppTyp(4, dir, xRand, yRand, datorArray, false);
+            redigeraPlan(datorArray);
+        }
+        for (datorloop = 0; datorloop < 1; datorloop++) {
+            xRand = Math.floor((Math.random() * 10) + 1) - 1;
+            yRand = Math.floor((Math.random() * 10) + 1) - 1;
+            dirRand = Math.floor((Math.random() * 2) + 1);
+            console.log("(" + xRand + "," + yRand + ") - " + dir);
+            switch (dirRand) {
+                case 1:
+                    dir = "vertical";
+                    break;
+                case 2:
+                    dir = "horisontal";
+                    break;
+                default:
+                    console.log("Käbbel med AI.");
+                    break;
+            }
+            skapaSkeppTyp(5, dir, xRand, yRand, datorArray, false);
+            redigeraPlan(datorArray);
+        }
     }
 });
