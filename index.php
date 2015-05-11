@@ -40,6 +40,9 @@
                     <input class="reset" type="submit" name="reset" value="Töm plan">
                 </form>
             </div>
+            <div id="dator">
+                
+            </div>
 
 
             <!--            <div id="Chatt">

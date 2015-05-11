@@ -24,8 +24,9 @@ $(document).ready(function() {
     var xRand = 0;
     var yRand = 0;
 
-    skapaPlan(dator);
-        genereraAI(dator);
+    skapaPlan(spelareEtt);
+    genereraAI(dator);
+    skapaDatorplan(dator);
 
 //    getSpelplan();
 
@@ -36,7 +37,9 @@ $(document).ready(function() {
         ref.on("value", function(snapshot) {
             var object = snapshot.val();
             spelareEtt = JSON.parse(object.spelare.spelareEtt);
+            dator = JSON.parse(object.spelare.dator);
             redigeraPlan(spelareEtt);
+            redigeraDatorplan(dator);
         }, function(errorObject) {
             console.log("The read failed: " + errorObject.code);
         });
@@ -53,16 +56,17 @@ $(document).ready(function() {
             var xKord = form.elements[0].value;
             var yKord = form.elements[1].value;
 
-            skjut(xKord, yKord, spelareEtt);
+            skjut(xKord, yKord, dator);
 
-            var json_spelareEtt = JSON.stringify(spelareEtt);
+            var json_dator = JSON.stringify(dator);
 
             var spelarRef = ref.child("spelare");
             spelarRef.set({
-                spelareEtt: json_spelareEtt
+                dator: json_dator
             });
-
+            
             getSpelplan();
+            console.log(dator);
 //            redigeraPlan(spelareEtt);
         });
     }
@@ -101,11 +105,6 @@ $(document).ready(function() {
             var yKord = form.elements[1].value;
             var direction = form.elements[2].value;
             var type = $('.radio:checked').val();
-
-//            console.log("x: " + xKord);
-//            console.log("y: " + yKord);
-//            console.log("typ: " + type);
-//            console.log("riktning: " + direction);
 
             skapaSkeppTyp(type, direction, xKord, yKord, spelareEtt, true);
 
@@ -175,6 +174,30 @@ $(document).ready(function() {
             $('#spelplan').append('</ul>');
         }
     }
+    function skapaDatorplan(spelarArray) {
+        for (i = 0; i < 10; i++) {
+            $('#dator').append('<ul id="d_ruta' + i + '" class="dator"><p>' + i + '</p>');
+            for (n = 0; n < 10; n++) {
+                switch (spelarArray[i][n]) {
+                    case 0:
+                        $("#d_ruta" + i).append('<li><div class="' + spelarArray[i][n] + ' datorRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    case 1:
+                        $("#d_ruta" + i).append('<li><div class="' + spelarArray[i][n] + ' datorRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    case 2:
+                        $("#d_ruta" + i).append('<li><div class="skeppHit ' + spelarArray[i][n] + ' datorRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    case 3:
+                        $("#d_ruta" + i).append('<li><div class="miss ' + spelarArray[i][n] + ' datorRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    default:
+                        console.log("Borde inte hända.");
+                }
+            }
+            $('#spelplan').append('</ul>');
+        }
+    }
 
     function redigeraPlan(spelarArray) {
         for (i = 0; i < 10; i++) {
@@ -192,6 +215,30 @@ $(document).ready(function() {
                         break;
                     case 3:
                         $("#ruta" + i).append('<li><div class="miss ' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    default:
+                        console.log("Borde inte hända.");
+                }
+            }
+        }
+    }
+    
+    function redigeraDatorplan(spelarArray) {
+        for (i = 0; i < 10; i++) {
+            $('#d_ruta' + i).replaceWith('<ul id="d_ruta' + i + '" class="dator"<p>' + i + '</p>');
+            for (n = 0; n < 10; n++) {
+                switch (spelarArray[i][n]) {
+                    case 0:
+                        $("#d_ruta" + i).append('<li><div class="' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    case 1:
+                        $("#d_ruta" + i).append('<li><div class="' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    case 2:
+                        $("#d_ruta" + i).append('<li><div class="skeppHit ' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        break;
+                    case 3:
+                        $("#d_ruta" + i).append('<li><div class="miss ' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
                         break;
                     default:
                         console.log("Borde inte hända.");
@@ -247,7 +294,6 @@ $(document).ready(function() {
                             window.alert("Så kan du inte göra din jävla idiot!");
                             break;
                         } else {
-                            console.log("Generera nytt tal.");
                             datorloop--;
                             break;
                         }
@@ -256,10 +302,8 @@ $(document).ready(function() {
                 //Skapa Båtar
                 if (legit) {
                     for (i = 0; i < type; i++) {
-
-                        var yVal = yStart + i;
                         spelarArray[xStart][yVal] = 1;
-                        console.log("(" + xStart + "," + yVal + ") innehåller nu en båt");
+                        var yVal = yStart + i;
                     }
                     switch (type) {
                         case 2:
@@ -302,7 +346,6 @@ $(document).ready(function() {
                             window.alert("Så kan du inte göra din jävla idiot!");
                             break;
                         } else {
-                            console.log("Generera nytt tal.");
                             datorloop--;
                             break;
                         }
@@ -311,9 +354,8 @@ $(document).ready(function() {
                 }
                 if (legit) {
                     for (i = 0; i < type; i++) {
-                        var xVal = xStart + i;
                         spelarArray[xVal][yStart] = 1;
-                        console.log("(" + xVal + "," + yStart + ") innehåller nu en båt");
+                        var xVal = xStart + i;
 //                    console.log("Post-array: " + spelarArray);
                     }
                     switch (type) {
@@ -359,10 +401,15 @@ $(document).ready(function() {
     function kollaPlats(spelarArray, x, y) {
         var xKord = x;
         var yKord = y;
-        var legitim = true;
-        if (spelarArray[xKord][yKord] !== 0 || xKord > 9 || yKord > 9) {
-            legitim = false;
-            console.log("(" + xKord + "," + yKord + ") är redan upptagen eller utanför planen.");
+        var legitim = false;
+//        console.log(x + "," + y);
+//        console.log(spelarArray);
+        if (xKord <= 9) {
+            if (yKord <= 9) {
+                if (spelarArray[xKord][yKord] === 0) {
+                    legitim = true;
+                }
+            }
         }
         return legitim;
     }
@@ -379,7 +426,6 @@ $(document).ready(function() {
             xRand = Math.floor((Math.random() * 10) + 1) - 1;
             yRand = Math.floor((Math.random() * 10) + 1) - 1;
             dirRand = Math.floor((Math.random() * 2) + 1);
-            console.log("(" + xRand + "," + yRand + ") - " + dir);
             switch (dirRand) {
                 case 1:
                     dir = "vertical";
@@ -398,7 +444,6 @@ $(document).ready(function() {
             xRand = Math.floor((Math.random() * 10) + 1) - 1;
             yRand = Math.floor((Math.random() * 10) + 1) - 1;
             dirRand = Math.floor((Math.random() * 2) + 1);
-            console.log("(" + xRand + "," + yRand + ") - " + dir);
             switch (dirRand) {
                 case 1:
                     dir = "vertical";
@@ -417,7 +462,6 @@ $(document).ready(function() {
             xRand = Math.floor((Math.random() * 10) + 1) - 1;
             yRand = Math.floor((Math.random() * 10) + 1) - 1;
             dirRand = Math.floor((Math.random() * 2) + 1);
-            console.log("(" + xRand + "," + yRand + ") - " + dir);
             switch (dirRand) {
                 case 1:
                     dir = "vertical";
@@ -451,5 +495,10 @@ $(document).ready(function() {
             skapaSkeppTyp(5, dir, xRand, yRand, datorArray, false);
             redigeraPlan(datorArray);
         }
+        var json_dator = JSON.stringify(datorArray);
+            var spelarRef = ref.child("spelare");
+            spelarRef.set({
+                dator: json_dator
+            });
     }
 });
