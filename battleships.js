@@ -21,6 +21,10 @@ $(document).ready(function() {
     var boatFour = 0;
     var boatFive = 0;
     var datorloop = 0;
+    var datorBoatTwo = 0;
+    var datorBoatThree = 0;
+    var datorBoatFour = 0;
+    var datorBoatFive = 0;
     var xRand = 0;
     var yRand = 0;
 
@@ -37,7 +41,7 @@ $(document).ready(function() {
         ref.on("value", function(snapshot) {
             var object = snapshot.val();
             spelareEtt = JSON.parse(object.spelare.spelareEtt);
-            dator = JSON.parse(object.spelare.dator);
+            dator = JSON.parse(object.dator.dator);
             redigeraPlan(spelareEtt);
             redigeraDatorplan(dator);
         }, function(errorObject) {
@@ -60,13 +64,12 @@ $(document).ready(function() {
 
             var json_dator = JSON.stringify(dator);
 
-            var spelarRef = ref.child("spelare");
-            spelarRef.set({
+            var datorRef = ref.child("dator");
+            datorRef.set({
                 dator: json_dator
             });
-            
+
             getSpelplan();
-            console.log(dator);
 //            redigeraPlan(spelareEtt);
         });
     }
@@ -222,7 +225,7 @@ $(document).ready(function() {
             }
         }
     }
-    
+
     function redigeraDatorplan(spelarArray) {
         for (i = 0; i < 10; i++) {
             $('#d_ruta' + i).replaceWith('<ul id="d_ruta' + i + '" class="dator"<p>' + i + '</p>');
@@ -305,34 +308,58 @@ $(document).ready(function() {
                         spelarArray[xStart][yVal] = 1;
                         var yVal = yStart + i;
                     }
-                    switch (type) {
-                        case 2:
-                            boatTwo += 1;
-                            if (boatTwo >= 4) {
-                                $('input').remove('.two');
-                            }
-                            break;
-                        case 3:
-                            boatThree++;
-                            if (boatThree >= 3) {
-                                $('input').remove('.three');
-                            }
-                            break;
-                        case 4:
-                            boatFour++;
-                            if (boatFour >= 2) {
-                                $('input').remove('.four');
-                            }
-                            break;
-                        case 5:
-                            boatFive++;
-                            if (boatFive >= 1) {
-                                $('input').remove('.five');
-                            }
-                            break;
-                        default:
-                            console.log("Now u fucked uP!");
-                            break;
+                    if (spelartyp) {
+                        console.log("spelare");
+
+                        switch (type) {
+                            case 2:
+                                boatTwo += 1;
+                                if (boatTwo >= 4) {
+                                    $('input').remove('.two');
+                                }
+                                break;
+                            case 3:
+                                boatThree++;
+                                if (boatThree >= 3) {
+                                    $('input').remove('.three');
+                                }
+                                break;
+                            case 4:
+                                boatFour++;
+                                if (boatFour >= 2) {
+                                    $('input').remove('.four');
+                                }
+                                break;
+                            case 5:
+                                boatFive++;
+                                if (boatFive >= 1) {
+                                    $('input').remove('.five');
+                                }
+                                break;
+                            default:
+                                console.log("Now u fucked uP!");
+                                break;
+                        }
+                    } else {
+                        console.log("dator");
+                        switch (type) {
+                            case 2:
+                                datorBoatTwo++;
+                                break;
+                            case 3:
+                                datorBoatThree++;
+
+                                break;
+                            case 4:
+                                datorBoatFour++;
+                                break;
+                            case 5:
+                                datorBoatFive++;
+                                break;
+                            default:
+                                console.log("Now u fucked uP!");
+                                break;
+                        }
                     }
                 }
                 break;
@@ -356,54 +383,80 @@ $(document).ready(function() {
                     for (i = 0; i < type; i++) {
                         spelarArray[xVal][yStart] = 1;
                         var xVal = xStart + i;
-//                    console.log("Post-array: " + spelarArray);
                     }
-                    switch (type) {
-                        case 2:
-                            boatTwo += 1;
-                            if (boatTwo >= 4) {
-                                $('input').remove('.two');
-                            }
-                            break;
-                        case 3:
-                            boatThree++;
-                            if (boatThree >= 3) {
-                                $('input').remove('.three');
-                            }
-                            break;
-                        case 4:
-                            boatFour++;
-                            if (boatFour >= 2) {
-                                $('input').remove('.four');
-                            }
-                            break;
-                        case 5:
-                            boatFive++;
-                            if (boatFive >= 1) {
-                                $('input').remove('.five');
-                            }
-                            break;
-                        default:
-                            console.log("Now u fucked uP!");
-                            break;
+                    if (spelartyp) {
+                        console.log("spelare");
+
+                        switch (type) {
+                            case 2:
+                                boatTwo += 1;
+                                if (boatTwo >= 4) {
+                                    $('input').remove('.two');
+                                }
+                                break;
+                            case 3:
+                                boatThree++;
+                                if (boatThree >= 3) {
+                                    $('input').remove('.three');
+                                }
+                                break;
+                            case 4:
+                                boatFour++;
+                                if (boatFour >= 2) {
+                                    $('input').remove('.four');
+                                }
+                                break;
+                            case 5:
+                                boatFive++;
+                                if (boatFive >= 1) {
+                                    $('input').remove('.five');
+                                }
+                                break;
+                            default:
+                                console.log("Now u fucked uP!");
+                                break;
+                        }
+                    } else {
+                        console.log("dator");
+                        switch (type) {
+                            case 2:
+                                datorBoatTwo++;
+                                break;
+                            case 3:
+                                datorBoatThree++;
+
+                                break;
+                            case 4:
+                                datorBoatFour++;
+                                break;
+                            case 5:
+                                datorBoatFive++;
+                                break;
+                            default:
+                                console.log("Now u fucked uP!");
+                                break;
+                        }
                     }
+
 
                 }
 
                 break;
             default:
-//                console.log("Now you fucked up!");
+                console.log("Now you fucked up!");
         }
-//        console.log(spelarArray);
-        redigeraPlan(spelarArray);
+        if (spelartyp) {
+            redigeraPlan(spelarArray);
+        } else {
+            redigeraDatorplan(spelarArray);
+        }
+
     }
 
     function kollaPlats(spelarArray, x, y) {
         var xKord = x;
         var yKord = y;
         var legitim = false;
-//        console.log(x + "," + y);
-//        console.log(spelarArray);
         if (xKord <= 9) {
             if (yKord <= 9) {
                 if (spelarArray[xKord][yKord] === 0) {
@@ -415,10 +468,10 @@ $(document).ready(function() {
     }
 
     function genereraAI(datorArray) {
-        boatTwo = 0;
-        boatThree = 0;
-        boatFour = 0;
-        boatFive = 0;
+        datorBoatTwo = 0;
+        datorBoatThree = 0;
+        datorBoatFour = 0;
+        datorBoatFive = 0;
         var dirRand = 1;
         var dir = "vertical";
         //Skapa tvåor
@@ -438,7 +491,7 @@ $(document).ready(function() {
                     break;
             }
             skapaSkeppTyp(2, dir, xRand, yRand, datorArray, false);
-            redigeraPlan(datorArray);
+            redigeraDatorplan(datorArray);
         }
         for (datorloop = 0; datorloop <= 2; datorloop++) {
             xRand = Math.floor((Math.random() * 10) + 1) - 1;
@@ -456,7 +509,7 @@ $(document).ready(function() {
                     break;
             }
             skapaSkeppTyp(3, dir, xRand, yRand, datorArray, false);
-            redigeraPlan(datorArray);
+            redigeraDatorplan(datorArray);
         }
         for (datorloop = 0; datorloop <= 1; datorloop++) {
             xRand = Math.floor((Math.random() * 10) + 1) - 1;
@@ -474,13 +527,12 @@ $(document).ready(function() {
                     break;
             }
             skapaSkeppTyp(4, dir, xRand, yRand, datorArray, false);
-            redigeraPlan(datorArray);
+            redigeraDatorplan(datorArray);
         }
         for (datorloop = 0; datorloop < 1; datorloop++) {
             xRand = Math.floor((Math.random() * 10) + 1) - 1;
             yRand = Math.floor((Math.random() * 10) + 1) - 1;
             dirRand = Math.floor((Math.random() * 2) + 1);
-            console.log("(" + xRand + "," + yRand + ") - " + dir);
             switch (dirRand) {
                 case 1:
                     dir = "vertical";
@@ -493,12 +545,12 @@ $(document).ready(function() {
                     break;
             }
             skapaSkeppTyp(5, dir, xRand, yRand, datorArray, false);
-            redigeraPlan(datorArray);
+            redigeraDatorplan(datorArray);
         }
         var json_dator = JSON.stringify(datorArray);
-            var spelarRef = ref.child("spelare");
-            spelarRef.set({
-                dator: json_dator
-            });
+        var datorRef = ref.child("dator");
+        datorRef.set({
+            dator: json_dator
+        });
     }
 });
