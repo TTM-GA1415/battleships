@@ -27,12 +27,13 @@ $(document).ready(function() {
     var datorBoatFive = 0;
     var xRand = 0;
     var yRand = 0;
+    var turn = true;
+    var placingBoats = true;
 
     skapaPlan(spelareEtt);
     genereraAI(dator);
     skapaDatorplan(dator);
-
-//    getSpelplan();
+    getSpelplan();
 
 
 
@@ -177,6 +178,7 @@ $(document).ready(function() {
             $('#spelplan').append('</ul>');
         }
     }
+
     function skapaDatorplan(spelarArray) {
         for (i = 0; i < 10; i++) {
             $('#dator').append('<ul id="d_ruta' + i + '" class="dator"><p>' + i + '</p>');
@@ -252,25 +254,30 @@ $(document).ready(function() {
 
     function skapaSkepp(xKord, yKord, spelarArray) {
         spelarArray[xKord][yKord] = 1;
-
     }
 
     function skjut(xKord, yKord, spelarArray) {
         switch (spelarArray[xKord][yKord]) {
             case 0:
                 spelarArray[xKord][yKord] = 3;
+                $("#shootDiv").hide();
+                console.log("blabla");
+                turn = false;
                 break;
 
             case 1:
                 spelarArray[xKord][yKord] = 2;
+                turn = true;
                 break;
 
             case 2:
                 console.log("Felaktigt skott");
                 break;
+
             case 3:
                 console.log("Felaktigt skott");
                 break;
+
             default:
                 console.log("Detta borde inte hända.");
         }
@@ -552,5 +559,42 @@ $(document).ready(function() {
         datorRef.set({
             dator: json_dator
         });
+    }
+
+    function AIShoot(spelarArray) {
+        var continueShoot = true;
+        while (continueShoot) {
+            xRand = Math.floor((Math.random() * 10) + 1) - 1;
+            yRand = Math.floor((Math.random() * 10) + 1) - 1;
+            switch (spelarArray[xRand][yRand]) {
+                case 0:
+                    spelarArray[xRand][yRand] = 3;
+                    continueShoot = false;
+                    break;
+
+                case 1:
+                    spelarArray[xRand][yRand] = 2;
+                    continueShoot = true;
+                    break;
+
+                case 2:
+                    console.log("Felaktigt skott");
+                    break;
+
+                case 3:
+                    console.log("Felaktigt skott");
+                    break;
+
+                default:
+                    console.log("Detta borde inte hända.");
+            }
+        }
+        var json_spelareEtt = JSON.stringify(spelarArray);
+            var spelarRef = ref.child("spelare");
+            spelarRef.set({
+                spelareEtt: json_spelareEtt
+            });
+            turn = true;
+            
     }
 });

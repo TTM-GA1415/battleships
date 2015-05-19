@@ -16,7 +16,8 @@
                                     <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required>
                                     <input class="placeBoat" type="submit" name="placeBoat" value="Placera Båt">
                                 </form>-->
-                <form id="placeBoatType" method="GET">
+                <div id="placeBoatDiv">
+                  <form id="placeBoatType" method="GET">
                     <input class="x_kord" type="text" name="X-Kordinat" placeholder="X-Kordinat" required>
                     <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required><br>
                     <select name="direction">
@@ -28,14 +29,16 @@
                     <input class="radio three" type="radio" name="boatType" value="3">3<br>
                     <input class="radio four" type="radio" name="boatType" value="4">4<br>
                     <input class="radio five" type="radio" name="boatType" value="5">5<br>
-
                     <input class="placeBoatType" type="submit" name="placeBoatType" value="Placera Båt">
-                </form>
-                <form id="shoot" method="GET">
+                </form>  
+                </div>
+                <div id="shootDiv">
+                  <form id="shoot" method="GET">
                     <input class="x_kord" type="text" name="X-Kordinat" placeholder="X-Kordinat" required>
                     <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required>
                     <input class="shoot" type="submit" name="shoot" value="Skjut">
-                </form>
+                </form>  
+                </div>
                 <form>
                     <input class="reset" type="submit" name="reset" value="Töm plan">
                 </form>
