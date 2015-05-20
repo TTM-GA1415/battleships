@@ -33,6 +33,7 @@
                 </form>  
                 </div>
                 <div id="shootDiv">
+                    Datorns skott: <p class="aishot"></p>
                   <form id="shoot" method="GET">
                     <input class="x_kord" type="text" name="X-Kordinat" placeholder="X-Kordinat" required>
                     <input class="y_kord" type="text" name="Y-Kordinat" placeholder="Y-Kordinat" required>

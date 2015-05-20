@@ -5,7 +5,6 @@
 #spelplan{
     overflow: auto;
     width: 700px;
-    height: 900px;
     margin-left: 200px;
     float:left;
 }
@@ -14,7 +13,6 @@ form{
 }
 .spelare{
     float:left;
-    height: 400px;
 }
 .planRuta{
     width: 40px;

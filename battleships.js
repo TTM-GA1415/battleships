@@ -135,6 +135,8 @@ $(document).ready(function() {
             spelarRef.set({
                 spelareEtt: json_spelareEtt
             });
+            dator = reset(dator);
+            dator = genereraAI(dator);
 
             getSpelplan();
 //            redigeraPlan(spelareEtt);
@@ -272,14 +274,19 @@ $(document).ready(function() {
 
             case 2:
                 console.log("Felaktigt skott");
+                turn = true;
                 break;
 
             case 3:
                 console.log("Felaktigt skott");
+                turn = true;
                 break;
 
             default:
                 console.log("Detta borde inte hända.");
+        }
+        if(!turn){
+            AIShoot(spelareEtt);
         }
     }
 
@@ -348,7 +355,7 @@ $(document).ready(function() {
                                 break;
                         }
                     } else {
-                        console.log("dator");
+                         
                         switch (type) {
                             case 2:
                                 datorBoatTwo++;
@@ -424,7 +431,7 @@ $(document).ready(function() {
                                 break;
                         }
                     } else {
-                        console.log("dator");
+                         
                         switch (type) {
                             case 2:
                                 datorBoatTwo++;
@@ -569,11 +576,12 @@ $(document).ready(function() {
             switch (spelarArray[xRand][yRand]) {
                 case 0:
                     spelarArray[xRand][yRand] = 3;
+                    $( ".aishot" ).replaceWith( "<p class='aishot'>(" + xRand + "," + yRand + ")</p>" );
                     continueShoot = false;
                     break;
-
                 case 1:
                     spelarArray[xRand][yRand] = 2;
+                    $( ".aishot" ).replaceWith( "<p class='aishot'>(" + xRand + "," + yRand + ")</p>" );
                     continueShoot = true;
                     break;
 
@@ -595,6 +603,6 @@ $(document).ready(function() {
                 spelareEtt: json_spelareEtt
             });
             turn = true;
-            
+            $("#shootDiv").show();
     }
 });
