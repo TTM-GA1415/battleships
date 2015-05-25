@@ -60,11 +60,10 @@ $(document).ready(function() {
             var form = document.getElementById("shoot");
             var xKord = form.elements[0].value;
             var yKord = form.elements[1].value;
-
+            console.log(dator[xKord]);
             skjut(xKord, yKord, dator);
-
+            console.log(dator[xKord]);
             var json_dator = JSON.stringify(dator);
-
             var datorRef = ref.child("dator");
             datorRef.set({
                 dator: json_dator
@@ -239,7 +238,7 @@ $(document).ready(function() {
                         $("#d_ruta" + i).append('<li><div class="' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
                         break;
                     case 1:
-                        $("#d_ruta" + i).append('<li><div class="' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
+                        $("#d_ruta" + i).append('<li><div class="skepp ' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
                         break;
                     case 2:
                         $("#d_ruta" + i).append('<li><div class="skeppHit ' + spelarArray[i][n] + ' planRuta"><p>' + i + ',' + n + '</p></div></li><br>');
@@ -261,9 +260,14 @@ $(document).ready(function() {
     function skjut(xKord, yKord, spelarArray) {
         switch (spelarArray[xKord][yKord]) {
             case 0:
+                console.log("funkar");
                 spelarArray[xKord][yKord] = 3;
+                var json_dator = JSON.stringify(dator);
+                var datorRef = ref.child("dator");
+                datorRef.set({
+                    dator: json_dator
+                });
                 $("#shootDiv").hide();
-                console.log("blabla");
                 turn = false;
                 break;
 
@@ -285,7 +289,7 @@ $(document).ready(function() {
             default:
                 console.log("Detta borde inte hända.");
         }
-        if(!turn){
+        if (!turn) {
             AIShoot(spelareEtt);
         }
     }
@@ -355,7 +359,7 @@ $(document).ready(function() {
                                 break;
                         }
                     } else {
-                         
+
                         switch (type) {
                             case 2:
                                 datorBoatTwo++;
@@ -431,7 +435,7 @@ $(document).ready(function() {
                                 break;
                         }
                     } else {
-                         
+
                         switch (type) {
                             case 2:
                                 datorBoatTwo++;
@@ -576,12 +580,12 @@ $(document).ready(function() {
             switch (spelarArray[xRand][yRand]) {
                 case 0:
                     spelarArray[xRand][yRand] = 3;
-                    $( ".aishot" ).replaceWith( "<p class='aishot'>(" + xRand + "," + yRand + ")</p>" );
+                    $(".aishot").replaceWith("<p class='aishot'>(" + xRand + "," + yRand + ")</p>");
                     continueShoot = false;
                     break;
                 case 1:
                     spelarArray[xRand][yRand] = 2;
-                    $( ".aishot" ).replaceWith( "<p class='aishot'>(" + xRand + "," + yRand + ")</p>" );
+                    $(".aishot").replaceWith("<p class='aishot'>(" + xRand + "," + yRand + ")</p>");
                     continueShoot = true;
                     break;
 
@@ -598,11 +602,11 @@ $(document).ready(function() {
             }
         }
         var json_spelareEtt = JSON.stringify(spelarArray);
-            var spelarRef = ref.child("spelare");
-            spelarRef.set({
-                spelareEtt: json_spelareEtt
-            });
-            turn = true;
-            $("#shootDiv").show();
+        var spelarRef = ref.child("spelare");
+        spelarRef.set({
+            spelareEtt: json_spelareEtt
+        });
+        turn = true;
+        $("#shootDiv").show();
     }
 });
